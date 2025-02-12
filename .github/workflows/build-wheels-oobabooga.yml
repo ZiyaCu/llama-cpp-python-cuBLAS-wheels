@@ -10,7 +10,7 @@ on:
         type: string
       config:
         description: 'Override configurations to build: key1:item1-1,item1-2;key2:item2-1,item2-2'
-        default: 'os:ubuntu-20.04'
+        default: 'Default'
         required: false
         type: string
       exclude:
@@ -27,7 +27,7 @@ on:
         type: string
       config:
         description: 'Configurations to build: key1:item1-1,item1-2;key2:item2-1,item2-2'
-        default: 'os:ubuntu-20.04'
+        default: 'Default'
         required: false
         type: string
       exclude:
@@ -57,9 +57,9 @@ jobs:
         id: set-matrix
         run: |
           $matrix = @{
-              'os' = 'ubuntu-20.04'
-              'pyver' = "3.12"
-              'cuda' = "12.1.1"
+              'os' = 'ubuntu-20.04', 'windows-2019'
+              'pyver' = "3.11", "3.12"
+              'cuda' = "11.8.0", "12.1.1"
               'avxver' = "AVX2", "AVX"
           }
           
