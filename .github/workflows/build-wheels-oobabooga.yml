@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version tag of llama-cpp-python to build: v0.2.14'
-        default: 'v0.2.14'
+        description: 'Version tag of llama-cpp-python to build: v0.3.7'
+        default: 'v0.3.7'
         required: true
         type: string
       config:
         description: 'Override configurations to build: key1:item1-1,item1-2;key2:item2-1,item2-2'
-        default: 'Default'
+        default: 'os:ubuntu-20.04'
         required: false
         type: string
       exclude:
@@ -21,13 +21,13 @@ on:
   workflow_call:
     inputs:
       version:
-        description: 'Version tag of llama-cpp-python to build: v0.2.14'
-        default: 'v0.2.14'
+        description: 'Version tag of llama-cpp-python to build: v0.3.7'
+        default: 'v0.3.7'
         required: true
         type: string
       config:
         description: 'Configurations to build: key1:item1-1,item1-2;key2:item2-1,item2-2'
-        default: 'Default'
+        default: 'os:ubuntu-20.04'
         required: false
         type: string
       exclude:
@@ -57,9 +57,9 @@ jobs:
         id: set-matrix
         run: |
           $matrix = @{
-              'os' = 'ubuntu-20.04', 'windows-2019'
-              'pyver' = "3.11", "3.10"
-              'cuda' = "11.8.0", "12.1.1"
+              'os' = 'ubuntu-20.04'
+              'pyver' = "3.12"
+              'cuda' = "12.1.1"
               'avxver' = "AVX2", "AVX"
           }
           
