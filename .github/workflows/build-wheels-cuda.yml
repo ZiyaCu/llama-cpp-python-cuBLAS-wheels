@@ -1,4 +1,4 @@
-name: Build CUDA Wheels
+name: Build CUDA Wheels new
 
 on:
   workflow_dispatch:
