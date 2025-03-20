@@ -19,19 +19,17 @@ jobs:
           echo "my_release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
           echo "my latest release: $RELEASE_TAG"
 
-      - name: Get latest release
-        id: get_release
+      - name: Get latest Git tag from another repository
         run: |
-          # Fetch release information and extract the release tag
-          RELEASE_TAG=$(curl -s https://api.github.com/repos/abetlen/llama-cpp-python/releases/latest | jq -r '.tag_name')
-          echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          echo "latest release: $RELEASE_TAG"
+          REPO_URL="https://github.com/abetlen/llama-cpp-python.git" # Replace with the target repository URL
+          latest_tag=$(git ls-remote --tags "$REPO_URL" | awk '{print $2}' | sed -E 's/refs\/tags\/(.*)/\1/' | sort -V | tail -n 1)
+          echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
 
       - name: Compare with previous release
         id: compare_release
         run: |
           # Compare the fetched release tag with the previous release tag
-          if [ "${{ steps.get_release.outputs.RELEASE_TAG }}" != "${{ steps.get_my_release.outputs.RELEASE_TAG }}" ]; then
+          if [ "${{ env.LATEST_TAG }}" != "${{ steps.get_my_release.outputs.RELEASE_TAG }}" ]; then
             echo "release_changed=true" >> $GITHUB_OUTPUT
             echo "Release changed: true"
           else
@@ -44,4 +42,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build-wheels-auto.yml
-          inputs: '{ "version": "${{ steps.get_release.outputs.RELEASE_TAG }}" }'
+          inputs: '{ "version": "${{ env.LATEST_TAG }}" }'
