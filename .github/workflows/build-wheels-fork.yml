@@ -1,4 +1,4 @@
-name: Build CUDA Wheels Manual
+name: Build CUDA Wheels Fork
 
 on:
   workflow_dispatch:
