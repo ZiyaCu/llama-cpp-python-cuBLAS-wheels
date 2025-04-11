@@ -150,6 +150,13 @@ jobs:
           if (!(mamba list cuda)[-1].contains('cuda')) {sleep -s 10; mamba install -y 'cuda' $cudaChannels.TrimEnd().Split()}
           if (!(mamba list cuda)[-1].contains('cuda')) {throw 'CUDA Toolkit failed to install!'}
           python -m pip install build wheel
+
+      - name: Set new version
+        run: |
+          # Assuming your __init__.py has a line like: __version__ = "1.2.4"
+          sed -i 's/__version__ = ".*"//__version__ = "'"${{ inputs.version }}"'"/' llama_cpp/__init__.py
+          # If your __init__.py has a different version assignment format, adjust the 'sed' command accordingly
+
           
       - name: Change Package Name
         run: |
