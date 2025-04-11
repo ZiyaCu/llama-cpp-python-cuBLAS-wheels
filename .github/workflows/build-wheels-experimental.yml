@@ -154,9 +154,11 @@ jobs:
       - name: Set new version
         run: |
           $packageVersion = [version]$env:PCKGVER.TrimStart('v')
+          cd llama-cpp-python
           # Assuming your __init__.py has a line like: __version__ = "1.2.4"
           sed -i 's/__version__ = ".*"//__version__ = "'"$packageVersion"'"/' llama_cpp/__init__.py
           # If your __init__.py has a different version assignment format, adjust the 'sed' command accordingly
+        working-directory: .
 
           
       - name: Change Package Name
