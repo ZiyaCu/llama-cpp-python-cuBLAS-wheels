@@ -103,10 +103,8 @@ jobs:
           
       - name: Set new version
         run: |
-          $packageVersion = [version]$env:PCKGVER.TrimStart('v')
-          echo "Package Version: $packageVersion"
           # Assuming your __init__.py has a line like: __version__ = "1.2.4"
-          sed -i "s#__version__ = \".*\"#__version__ = \"$packageVersion\"#" ./llama_cpp/__init__.py
+          sed -i "s#__version__ = \".*\"#__version__ = \"$env:PCKGVER.TrimStart('v')\"#" ./llama_cpp/__init__.py
           # If your __init__.py has a different version assignment format, adjust the 'sed' command accordingly
 
       - uses: actions/setup-python@v4
