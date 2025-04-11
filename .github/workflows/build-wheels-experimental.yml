@@ -101,6 +101,13 @@ jobs:
           #ref: ${{ inputs.version }}
           submodules: 'recursive'
           
+      - name: Set new version
+        run: |
+          $packageVersion = [version]$env:PCKGVER.TrimStart('v')
+          # Assuming your __init__.py has a line like: __version__ = "1.2.4"
+          sed -i 's#__version__ = ".*"#__version__ = "'"$packageVersion"'"#' ./llama_cpp/__init__.py
+          # If your __init__.py has a different version assignment format, adjust the 'sed' command accordingly
+
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.pyver }}
@@ -151,14 +158,6 @@ jobs:
           if (!(mamba list cuda)[-1].contains('cuda')) {throw 'CUDA Toolkit failed to install!'}
           python -m pip install build wheel
 
-      - name: Set new version
-        run: |
-          $packageVersion = [version]$env:PCKGVER.TrimStart('v')
-          # Assuming your __init__.py has a line like: __version__ = "1.2.4"
-          sed -i 's#__version__ = ".*"#__version__ = "'"$packageVersion"'"#' ./llama_cpp/__init__.py
-          # If your __init__.py has a different version assignment format, adjust the 'sed' command accordingly
-
-          
       - name: Change Package Name
         run: |
           $packageVersion = [version]$env:PCKGVER.TrimStart('v')
